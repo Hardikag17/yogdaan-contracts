@@ -53,6 +53,7 @@ contract Yogdaan {
     }
 
     struct SHG {
+        uint256 id;
         uint256[] users;
         string name;
         Location location;
@@ -88,9 +89,11 @@ contract Yogdaan {
     }
 
     mapping(uint256 => User) users;
+    mapping(uint256 => SHG) shgs;
     mapping(address => uint256) addressToUser;
     mapping(uint256 => Loan) loans;
     uint256 numUsers;
+    uint256 numSHGs;
 
     function login() public view returns (bool) {
         return (users[addressToUser[msg.sender]].walletAddress == msg.sender);
@@ -101,40 +104,52 @@ contract Yogdaan {
         string memory aadhar,
         uint256 mobno,
         string memory fatherName,
-        address walletAddress,
-        uint256[] memory loansTaken,
-        uint256 amountTaken,
-        UserType userType,
         Gender gender
     ) public {
         require(
             users[addressToUser[msg.sender]].walletAddress != msg.sender,
             "Already Registered"
         );
-        users[addressToUser[msg.sender]] = User(
+        uint256 id = ++numUsers;
+        addressToUser[msg.sender] = id;
+        users[id] = User(
             numUsers++,
             name,
             aadhar,
             mobno,
             fatherName,
-            walletAddress,
-            loansTaken,
-            amountTaken,
-            userType,
+            msg.sender,
+            new uint256[](0),
+            0,
+            UserType.NONE,
             gender
         );
     }
 
-    // function addSHG(
-    //     uint256[] memory user,
-    //     uint256 president,
-
-    //     string name,
-    //     Location location,
-    //     string dateOfFormation,
-    //     uint256 currentBalance,
-    //     uint256 owedBalance,
-    //     uint256[] loansGiven,
-    //     uint256[] loansTaken
-    // ) public {}
+    function addSHG(
+        uint256[] memory members,
+        uint256 president,
+        string memory name,
+        Location memory location,
+        string memory dateOfFormation
+    ) public {
+        require(members.length >= 7, "Atleast 7 members required");
+        uint256 id = ++numSHGs;
+        shgs[id] = SHG(
+            id,
+            members,
+            name,
+            location,
+            dateOfFormation,
+            0,
+            0,
+            new uint256[](0),
+            new uint256[](0)
+        );
+        for (uint256 i = 0; i < members.length; i++) {
+            users[members[i]].userType = members[i] == president
+                ? UserType.PRESIDENT
+                : UserType.MEMBER;
+        }
+    }
 }
