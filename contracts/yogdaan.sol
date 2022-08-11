@@ -1,155 +1,41 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.1;
+import "./lib/structs.sol";
 
-contract Yogdaan {
-    enum UserType {
-        PRESIDENT,
-        VICE_PRESIDENT,
-        TREASURER,
-        MEMBER,
-        NONE,
-        ADMIN
-    }
+contract Yogdaan is structs {
+    function addBank() public {}
 
-    enum Gender {
-        MALE,
-        FEMALE,
-        OTHER
-    }
+    function addSHGMember() public {}
 
-    enum RequestStatus {
-        APPROVED,
-        REJECTED,
-        IN_PROCESS,
-        FORWARDED
-    }
+    function removeSHGMember() public {}
 
-    struct User {
-        uint256 id;
-        string name;
-        string aadhar;
-        uint256 mobno;
-        string fatherName;
-        address walletAddress;
-        uint256[] loansTaken;
-        uint256 amountTaken;
-        UserType userType;
-        Gender gender;
-    }
+    function updateMemberRole() public {}
 
-    struct Location {
-        string state;
-        string district;
-        string blockName;
-        string panchyarName;
-        string villageName;
-    }
+    function makeRequest() public {}
 
-    struct Bank {
-        string name;
-        address walletAddress;
-        string code;
-        uint256 intrestRate;
-    }
+    function approveRequest() public {}
 
-    struct SHG {
-        uint256 id;
-        uint256[] users;
-        string name;
-        Location location;
-        string dateOfFormation;
-        uint256 currentBalance;
-        uint256 owedBalance;
-        uint256[] loansGiven;
-        uint256[] loansTaken;
-    }
+    function sendGrant() public {}
 
-    struct Loan {
-        uint256 loanId;
-        uint256 lenderId;
-        uint256 amount;
-        uint256 lendeeId;
-        uint256 intrest;
-        uint256 date;
-        uint256 lastEMI;
-    }
+    function forwordRequest() public {}
 
-    struct Status {
-        RequestStatus requestStatus;
-        uint256 Id;
-    }
+    // Repay functions for user
 
-    struct request {
-        uint256 requestId;
-        uint256 userId;
-        uint256 amount;
-        string description;
-        uint256 SHGId;
-        Status[] status;
-    }
+    function payEMI() public {}
 
-    mapping(uint256 => User) users;
-    mapping(uint256 => SHG) shgs;
-    mapping(address => uint256) addressToUser;
-    mapping(uint256 => Loan) loans;
-    uint256 numUsers;
-    uint256 numSHGs;
+    function getEMI() public {}
 
-    function login() public view returns (bool) {
-        return (users[addressToUser[msg.sender]].walletAddress == msg.sender);
-    }
+    function updateLoanAmount() internal {}
 
-    function addUser(
-        string memory name,
-        string memory aadhar,
-        uint256 mobno,
-        string memory fatherName,
-        Gender gender
-    ) public {
-        require(
-            users[addressToUser[msg.sender]].walletAddress != msg.sender,
-            "Already Registered"
-        );
-        uint256 id = ++numUsers;
-        addressToUser[msg.sender] = id;
-        users[id] = User(
-            numUsers++,
-            name,
-            aadhar,
-            mobno,
-            fatherName,
-            msg.sender,
-            new uint256[](0),
-            0,
-            UserType.NONE,
-            gender
-        );
-    }
+    function flagDefaulters() public {}
 
-    function addSHG(
-        uint256[] memory members,
-        uint256 president,
-        string memory name,
-        Location memory location,
-        string memory dateOfFormation
-    ) public {
-        require(members.length >= 7, "Atleast 7 members required");
-        uint256 id = ++numSHGs;
-        shgs[id] = SHG(
-            id,
-            members,
-            name,
-            location,
-            dateOfFormation,
-            0,
-            0,
-            new uint256[](0),
-            new uint256[](0)
-        );
-        for (uint256 i = 0; i < members.length; i++) {
-            users[members[i]].userType = members[i] == president
-                ? UserType.PRESIDENT
-                : UserType.MEMBER;
-        }
-    }
+    // fetch functions
+
+    function getbanks() public {}
+
+    function getSHGs() public {}
+
+    function getRequests() public {}
+
+    function getSHGMembers() public {}
 }
