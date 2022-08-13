@@ -19,6 +19,7 @@ contract structs {
 
     enum RequestStatus {
         APPROVED,
+        COMPLETED,
         REJECTED,
         IN_PROCESS,
         FORWARDED
@@ -33,6 +34,7 @@ contract structs {
         address walletAddress;
         uint256[] loansTaken;
         uint256 amountTaken;
+        uint256 shgid;
         UserType userType;
         Gender gender;
     }
@@ -79,7 +81,7 @@ contract structs {
         uint256 Id;
     }
 
-    struct request {
+    struct Request {
         uint256 requestId;
         uint256 userId;
         uint256 amount;
@@ -92,6 +94,7 @@ contract structs {
     mapping(uint256 => SHG) shgs;
     mapping(address => uint256) addressToUser;
     mapping(uint256 => Loan) loans;
+    mapping(uint256 => Request) requests;
     uint256 numUsers;
     uint256 numSHGs;
 }
