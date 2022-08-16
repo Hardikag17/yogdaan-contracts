@@ -89,12 +89,4 @@ contract structs {
         uint256 SHGId;
         Status[] status;
     }
-
-    mapping(uint256 => User) users;
-    mapping(uint256 => SHG) shgs;
-    mapping(address => uint256) addressToUser;
-    mapping(uint256 => Loan) loans;
-    mapping(uint256 => Request) requests;
-    uint256 numUsers;
-    uint256 numSHGs;
 }
