@@ -29,8 +29,42 @@ contract User is structs {
             msg.sender,
             new uint256[](0),
             0,
+            0, // SHG id is zero inttially as a placeholder for every user
             UserType.NONE,
             gender
         );
     }
+
+    // Request functions for user
+
+    function makeRequest(
+        uint256 _shgid,
+        uint256 _userId,
+        uint256 _amount,
+        string memory _description
+    ) public {
+        uint256 _requestId = ++numRequests;
+        requests[_requestId] = Request(
+            _requestId,
+            _userId,
+            _amount,
+            _description,
+            _shgid,
+            new Status[](0)
+        );
+    }
+
+    function deleteRequest() public {}
+
+    function approveRequest() public {}
+
+    // Repay functions for user
+
+    function payEMI() public {}
+
+    function getEMI() public {}
+
+    function updateLoanAmount() internal {}
+
+    function flagDefaulters() public {}
 }

@@ -48,6 +48,7 @@ contract structs {
     }
 
     struct Bank {
+        uint256 id;
         string name;
         address walletAddress;
         string code;
@@ -89,4 +90,15 @@ contract structs {
         uint256 SHGId;
         Status[] status;
     }
+
+    mapping(uint256 => User) users;
+    mapping(uint256 => SHG) public shgs;
+    mapping(uint256 => Bank) banks;
+    mapping(address => uint256) addressToUser;
+    mapping(uint256 => Loan) loans;
+    mapping(uint256 => Request) requests;
+    uint256 numUsers;
+    uint256 numSHGs;
+    uint256 numRequests;
+    uint256 numBanks;
 }
