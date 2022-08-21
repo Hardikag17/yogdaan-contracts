@@ -141,7 +141,7 @@ contract SHG is structs, helpers, modifiers {
         uint256 _loanid,
         uint256 _amount
     ) public onlySHG(_shgid) {
-        uint256 amount = getEMI(_shgid, _loanid);
+        uint256 amount = getSHGEMI(_shgid, _loanid);
         require(amount == _amount);
         Loan storage loan = loans[_loanid];
         payable(address(this)).transfer(_amount);
@@ -150,7 +150,7 @@ contract SHG is structs, helpers, modifiers {
     }
 
     // fetch functions
-    function getEMI(uint256 _shgid, uint256 _loanid)
+    function getSHGEMI(uint256 _shgid, uint256 _loanid)
         public
         onlySHG(_shgid)
         returns (uint256)

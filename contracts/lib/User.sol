@@ -81,7 +81,7 @@ contract User is structs, modifiers {
         uint256 _loanid,
         uint256 _amount
     ) public payable onlyUser(_userid) {
-        uint256 amount = getEMI(_userid, _loanid);
+        uint256 amount = getUserEMI(_userid, _loanid);
         require(amount == _amount);
         Loan storage loan = loans[_loanid];
         payable(address(this)).transfer(_amount);
@@ -91,7 +91,7 @@ contract User is structs, modifiers {
 
     // fetch functions
 
-    function getEMI(uint256 userid, uint256 loanid)
+    function getUserEMI(uint256 userid, uint256 loanid)
         public
         onlyUser(userid)
         returns (uint256)

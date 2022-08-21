@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.1;
 
-contract helpers{
+contract helpers {
     function deleteIndex(uint256[] memory array, uint256 index)
         internal
         pure
@@ -39,5 +39,7 @@ contract helpers{
                 return i;
             }
         }
+
+        return 0;
     }
 }
