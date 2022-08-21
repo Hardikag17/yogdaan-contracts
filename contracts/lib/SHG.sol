@@ -3,14 +3,16 @@ pragma solidity ^0.8.1;
 
 import "./structs.sol";
 import "./helpers.sol";
+import "./modifiers.sol";
 
-contract SHG is structs, helpers {
+contract SHG is structs, helpers, modifiers {
     function addSHG(
         uint256[] memory members,
         uint256 president,
         string memory name,
         Location memory location,
-        string memory dateOfFormation
+        string memory dateOfFormation,
+        uint256 _baseIntrest
     ) public {
         require(members.length >= 7, "Atleast 7 members required");
         uint256 id = ++numSHGs;
@@ -23,7 +25,8 @@ contract SHG is structs, helpers {
             0,
             0,
             new uint256[](0),
-            new uint256[](0)
+            new uint256[](0),
+            _baseIntrest
         );
         for (uint256 i = 0; i < members.length; i++) {
             users[members[i]].userType = members[i] == president
@@ -56,46 +59,133 @@ contract SHG is structs, helpers {
         users[id].userType = updatedType;
     }
 
-    function sendGrant(uint256 requestid) public {
+    function sendGrant(uint256 _requestid) public {
         require(
             users[addressToUser[msg.sender]].userType == UserType.TREASURER,
             "Unauthorized reqest"
         );
         require(
-            requests[requestid].status.length > 0 &&
-                requests[requestid]
-                    .status[requests[requestid].status.length - 1]
-                    .requestStatus ==
-                RequestStatus.APPROVED,
+            userRequests[_requestid].status == RequestStatus.APPROVED,
             "Unapproved request"
         );
-        payable(users[requests[requestid].userId].walletAddress).transfer(
-            requests[requestid].amount
-        );
+        UserRequest storage request = userRequests[_requestid];
+
+        request.status = RequestStatus.COMPLETED;
+
+        Loan memory newLoan = Loan({
+            loanId: ++numLoans,
+            lenderId: request.SHGId,
+            amount: request.amount,
+            lendeeId: request.userId,
+            intrest: shgs[request.SHGId].baseIntrest,
+            loanTime: request.loanTime,
+            date: block.timestamp,
+            lastEMI: 0
+        });
+
+        loans[numLoans] = newLoan;
+        shgs[request.SHGId].loansGiven.push(numLoans);
+        users[request.userId].loansTaken.push(numLoans);
+
+        require(shgs[request.SHGId].currentBalance >= request.amount);
+        payable(users[request.userId].walletAddress).transfer(request.amount);
+        shgs[request.SHGId].currentBalance -= request.amount;
     }
 
-    function forwordRequest(uint256 requestid, uint256 forwordid) public {
-        Request storage req = requests[requestid];
-        // check if request id is valid
-        // check if request is not already approved
-        // check if forword id is valid
+    function checkApproval(uint256 _requestid) internal view returns (bool) {
+        uint256[] storage approvals = userRequests[_requestid].approvals;
 
-        Status storage newStatus = req.status.push();
-        newStatus.Id = forwordid;
-        newStatus.requestStatus = RequestStatus.FORWARDED;
+        for (uint256 i = 0; i < approvals.length; i++) {
+            if (approvals[i] == addressToUser[msg.sender]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function approveRequest(uint256 _requestid, uint256 _shgid)
+        public
+        onlySHG(_shgid)
+    {
+        UserRequest storage request = userRequests[_requestid];
+        require(request.SHGId == _shgid);
+
+        require(checkApproval(_requestid));
+        request.approvals.push(addressToUser[msg.sender]);
+
+        if (request.approvals.length > shgs[_shgid].users.length / 2) {
+            request.status = RequestStatus.APPROVED;
+        }
+    }
+
+    function sendRequestToBank(
+        uint256 _shgid,
+        uint256 _amount,
+        uint256 _loanTime
+    ) public onlySHG(_shgid) {
+        require(users[addressToUser[msg.sender]].shgid == _shgid);
+        uint256 reqid = numSHGRequests++;
+        shgRequests[reqid] = SHGRequest(
+            reqid,
+            _shgid,
+            _amount,
+            _loanTime,
+            RequestStatus.IN_PROCESS
+        );
+        shgs[_shgid].loansTaken.push(reqid);
+    }
+
+    function shgPayEMI(
+        uint256 _shgid,
+        uint256 _loanid,
+        uint256 _amount
+    ) public onlySHG(_shgid) {
+        uint256 amount = getEMI(_shgid, _loanid);
+        require(amount == _amount);
+        Loan storage loan = loans[_loanid];
+        payable(address(this)).transfer(_amount);
+        shgs[loan.lendeeId].currentBalance += _amount;
+        loan.lastEMI = block.timestamp;
     }
 
     // fetch functions
+    function getEMI(uint256 _shgid, uint256 _loanid)
+        public
+        onlySHG(_shgid)
+        returns (uint256)
+    {
+        Loan storage loan = loans[_loanid];
+        uint256 months = ((block.timestamp - loan.lastEMI) / 24) * 60 * 60 * 30;
+
+        require(months > 0);
+        uint256 P = loan.amount;
+        uint256 r = loan.intrest;
+        uint256 t = loan.loanTime;
+        uint256 emi = (P * (1 + ((r / 100) * 12))) ^ ((12 * t) - P);
+
+        loan.amount = loan.amount - emi;
+        return emi;
+    }
+
     function getSHG(uint256 shgid) public view returns (SHG memory) {
         return shgs[shgid];
     }
 
-    function getRequests(uint256 requestid)
+    function getUserRequests(uint256 requestid)
         public
         view
-        returns (Request memory)
+        returns (UserRequest memory)
     {
-        return requests[requestid];
+        return userRequests[requestid];
+    }
+
+    function getSHGRequests(uint256 requestid)
+        public
+        view
+        returns (SHGRequest memory)
+    {
+        return shgRequests[requestid];
     }
 
     function getSHGMembers(uint256 shgid)
