@@ -1,3 +1,3 @@
 ## Yogdaan Contracts
 
-Ma testnet deployed address: 
+MATIC testnet deployed address: 
