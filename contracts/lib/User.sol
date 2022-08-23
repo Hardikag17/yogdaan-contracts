@@ -13,7 +13,12 @@ contract User is structs, modifiers {
         string memory aadhar,
         uint256 mobno,
         string memory fatherName,
-        Gender gender
+        Gender gender,
+        string memory _state,
+        string memory _district,
+        string memory _blockName,
+        string memory _panchyatName,
+        string memory _villageName
     ) public {
         require(
             users[addressToUser[msg.sender]].walletAddress != msg.sender,
@@ -21,6 +26,15 @@ contract User is structs, modifiers {
         );
         uint256 id = ++numUsers;
         addressToUser[msg.sender] = id;
+
+        Location memory newlocation = Location({
+            state: _state,
+            district: _district,
+            blockName: _blockName,
+            panchyatName: _panchyatName,
+            villageName: _villageName
+        });
+
         users[id] = User(
             numUsers++,
             name,
@@ -32,7 +46,8 @@ contract User is structs, modifiers {
             0,
             0, // SHG id is zero inttially as a placeholder for every user
             UserType.NONE,
-            gender
+            gender,
+            newlocation
         );
     }
 

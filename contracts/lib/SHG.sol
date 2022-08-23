@@ -33,6 +33,10 @@ contract SHG is structs, helpers, modifiers {
                 ? UserType.PRESIDENT
                 : UserType.MEMBER;
         }
+
+        for (uint256 i = 0; i < members.length; i++) {
+            addressToSHGid[users[members[i]].walletAddress] = numSHGs;
+        }
     }
 
     function addSHGMember(uint256 userid, uint256 shg) public {

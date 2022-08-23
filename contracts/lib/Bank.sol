@@ -19,6 +19,8 @@ contract Bank is structs, modifiers {
             _intrestRate,
             new uint256[](0)
         );
+
+        addressToBankid[_walletAddress] = numBanks;
     }
 
     function approveLoan(uint256 _shgrequestid, uint256 _bankid)

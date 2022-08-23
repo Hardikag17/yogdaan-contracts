@@ -36,13 +36,14 @@ contract structs {
         uint256 shgid;
         UserType userType;
         Gender gender;
+        Location location;
     }
 
     struct Location {
         string state;
         string district;
         string blockName;
-        string panchyarName;
+        string panchyatName;
         string villageName;
     }
 
@@ -103,14 +104,18 @@ contract structs {
         RequestStatus status;
     }
 
-    mapping(uint256 => User) users;
+    mapping(uint256 => User) public users;
     mapping(uint256 => SHG) public shgs;
-    mapping(uint256 => Bank) banks;
+    mapping(uint256 => Bank) public banks;
 
-    mapping(address => uint256) addressToUser;
-    mapping(uint256 => Loan) loans;
-    mapping(uint256 => UserRequest) userRequests;
-    mapping(uint256 => SHGRequest) shgRequests;
+    mapping(address => uint256) public addressToUser;
+    mapping(uint256 => Loan) public loans;
+    mapping(uint256 => UserRequest) public userRequests;
+    mapping(uint256 => SHGRequest) public shgRequests;
+
+    // Login
+    mapping(address => uint256) public addressToSHGid;
+    mapping(address => uint256) public addressToBankid;
 
     uint256 numUsers;
     uint256 numSHGs;
