@@ -172,26 +172,6 @@ contract SHG is structs, helpers, modifiers {
         return emi;
     }
 
-    function getSHG(uint256 shgid) public view returns (SHG memory) {
-        return shgs[shgid];
-    }
-
-    function getUserRequests(uint256 requestid)
-        public
-        view
-        returns (UserRequest memory)
-    {
-        return userRequests[requestid];
-    }
-
-    function getSHGRequests(uint256 requestid)
-        public
-        view
-        returns (SHGRequest memory)
-    {
-        return shgRequests[requestid];
-    }
-
     function getSHGMembers(uint256 shgid)
         public
         view

@@ -133,5 +133,5 @@ contract User is structs, modifiers {
         return users[userid].loansTaken;
     }
 
-    function flagDefaulters() public {}
+    // function flagDefaulters() public {}
 }

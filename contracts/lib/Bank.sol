@@ -62,10 +62,4 @@ contract Bank is structs, modifiers {
         shgs[shgRequests[_requestid].shgid].currentBalance += _amount;
         loans[numLoans] = newLoan;
     }
-
-    // fetch functions
-
-    function getbanks(uint256 bankid) public view returns (Bank memory) {
-        return banks[bankid];
-    }
 }
