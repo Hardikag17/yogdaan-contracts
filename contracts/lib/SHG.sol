@@ -9,6 +9,7 @@ contract SHG is structs, helpers, modifiers {
     function addSHG(
         uint256[] memory members,
         uint256 president,
+        uint256 treasurer,
         string memory name,
         Location memory location,
         string memory dateOfFormation,
@@ -29,9 +30,11 @@ contract SHG is structs, helpers, modifiers {
             _baseIntrest
         );
         for (uint256 i = 0; i < members.length; i++) {
-            users[members[i]].userType = members[i] == president
-                ? UserType.PRESIDENT
-                : UserType.MEMBER;
+            users[members[i]].userType = UserType.MEMBER;
+            if (members[i] == president)
+                users[members[i]].userType = UserType.PRESIDENT;
+            if (members[i] == treasurer)
+                users[members[i]].userType = UserType.TREASURER;
         }
 
         for (uint256 i = 0; i < members.length; i++) {

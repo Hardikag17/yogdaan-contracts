@@ -43,6 +43,7 @@ contract User is structs, modifiers {
             fatherName,
             msg.sender,
             new uint256[](0),
+            new uint256[](0),
             0,
             0, // SHG id is zero inttially as a placeholder for every user
             UserType.NONE,
@@ -60,9 +61,9 @@ contract User is structs, modifiers {
         string memory _description,
         uint256 _loanTime
     ) public {
-        uint256 _requestId = ++numUserRequests;
-        userRequests[_requestId] = UserRequest(
-            _requestId,
+        uint256 requestId = ++numUserRequests;
+        userRequests[requestId] = UserRequest(
+            requestId,
             _userid,
             _amount,
             _description,
@@ -71,6 +72,7 @@ contract User is structs, modifiers {
             _loanTime,
             new uint256[](0)
         );
+        users[_userid].requests.push(requestId);
     }
 
     function deleteRequest(uint256 _userid, uint256 _requestid)
