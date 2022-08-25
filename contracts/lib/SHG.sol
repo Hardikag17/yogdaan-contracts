@@ -51,7 +51,7 @@ contract SHG is structs, helpers, modifiers {
                 users[userid].userType = UserType.TREASURER;
             addressToSHGid[users[userid].walletAddress] = numSHGs;
         }
-        shgsOfDistrict[_district].push(id);
+        districtToSHGs[_district].push(id);
     }
 
     function addSHGMember(uint256 userid, uint256 shg) public {
@@ -193,5 +193,13 @@ contract SHG is structs, helpers, modifiers {
         returns (uint256[] memory)
     {
         return shgs[shgid].users;
+    }
+
+    function shgsOfDistrict(string memory district)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return districtToSHGs[district];
     }
 }
