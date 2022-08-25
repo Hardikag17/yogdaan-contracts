@@ -43,15 +43,13 @@ contract SHG is structs, helpers, modifiers {
             _baseIntrest
         );
         for (uint256 i = 0; i < members.length; i++) {
-            users[members[i]].userType = UserType.MEMBER;
-            if (members[i] == president)
-                users[members[i]].userType = UserType.PRESIDENT;
-            if (members[i] == treasurer)
-                users[members[i]].userType = UserType.TREASURER;
-        }
-
-        for (uint256 i = 0; i < members.length; i++) {
-            addressToSHGid[users[members[i]].walletAddress] = numSHGs;
+            uint256 userid = members[i];
+            users[userid].userType = UserType.MEMBER;
+            if (userid == president)
+                users[userid].userType = UserType.PRESIDENT;
+            if (userid == treasurer)
+                users[userid].userType = UserType.TREASURER;
+            addressToSHGid[users[userid].walletAddress] = numSHGs;
         }
     }
 
