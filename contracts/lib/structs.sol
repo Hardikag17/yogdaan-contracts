@@ -118,6 +118,10 @@ contract structs {
     mapping(address => uint256) public addressToSHGid;
     mapping(address => uint256) public addressToBankid;
 
+    // fetch
+    mapping(uint256 => uint256[]) public userToRequests;
+    mapping(uint256 => uint256[]) public shgToRequests;
+
     uint256 numUsers;
     uint256 numSHGs;
     uint256 numUserRequests;

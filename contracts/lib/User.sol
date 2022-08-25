@@ -107,6 +107,19 @@ contract User is structs, modifiers {
 
     // fetch functions
 
+    function getNumUsers() public view returns (uint256) {
+        return numUsers;
+    }
+
+    function getUserRequest(uint256 _userid) public returns (uint256[] memory) {
+        for (uint256 i = 0; i < numUserRequests; i++) {
+            if (userRequests[i].userId == _userid) {
+                userToRequests[_userid].push(i);
+            }
+        }
+        return userToRequests[_userid];
+    }
+
     function getUserEMI(uint256 userid, uint256 loanid)
         public
         onlyUser(userid)
@@ -119,7 +132,7 @@ contract User is structs, modifiers {
         uint256 P = loan.amount;
         uint256 r = loan.intrest;
         uint256 t = loan.loanTime;
-        uint256 emi = (P * (1 + ((r / 100) * 12))) ^ ((12 * t) - P);
+        uint256 emi = (P * (1 + ((r / 100) * 12))) ^ ((12 * t));
 
         loan.amount = loan.amount - emi;
         return emi;

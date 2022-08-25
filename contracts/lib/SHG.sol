@@ -169,6 +169,19 @@ contract SHG is structs, helpers, modifiers {
     }
 
     // fetch functions
+    function totalNumSHGs() public view returns (uint256) {
+        return numSHGs;
+    }
+
+    function getSHGRequests(uint256 _shgid) public returns (uint256[] memory) {
+        for (uint256 i = 0; i < numSHGRequests; i++) {
+            if (shgRequests[i].shgid == _shgid) {
+                shgToRequests[_shgid].push(i);
+            }
+        }
+        return shgToRequests[_shgid];
+    }
+
     function getSHGEMI(uint256 _shgid, uint256 _loanid)
         public
         onlySHG(_shgid)
@@ -181,7 +194,7 @@ contract SHG is structs, helpers, modifiers {
         uint256 P = loan.amount;
         uint256 r = loan.intrest;
         uint256 t = loan.loanTime;
-        uint256 emi = (P * (1 + ((r / 100) * 12))) ^ ((12 * t) - P);
+        uint256 emi = (P * (1 + ((r / 100) * 12))) ^ ((12 * t));
 
         loan.amount = loan.amount - emi;
         return emi;
