@@ -33,7 +33,6 @@ contract structs {
         address walletAddress;
         uint256[] loansTaken;
         uint256[] requests;
-        uint256 amountTaken;
         uint256 shgid;
         UserType userType;
         Gender gender;

@@ -44,7 +44,6 @@ contract User is structs, modifiers {
             msg.sender,
             new uint256[](0),
             new uint256[](0),
-            0,
             0, // SHG id is zero inttially as a placeholder for every user
             UserType.NONE,
             gender,
@@ -133,6 +132,15 @@ contract User is structs, modifiers {
         returns (uint256[] memory)
     {
         return users[userid].loansTaken;
+    }
+
+    function getUserLoanAmount(uint256 _userid) public view returns (uint256) {
+        uint256 amount = 0;
+        uint256[] memory loans = users[_userid].loansTaken;
+        for (uint256 i = 0; i < loans.length; i++) {
+            amount += loans[i];
+        }
+        return amount;
     }
 
     // function flagDefaulters() public {}
