@@ -11,17 +11,30 @@ contract SHG is structs, helpers, modifiers {
         uint256 president,
         uint256 treasurer,
         string memory name,
-        Location memory location,
+        string memory _state,
+        string memory _district,
+        string memory _blockName,
+        string memory _panchyatName,
+        string memory _villageName,
         string memory dateOfFormation,
         uint256 _baseIntrest
     ) public {
         require(members.length >= 7, "Atleast 7 members required");
         uint256 id = ++numSHGs;
+
+        Location memory newlocation = Location({
+            state: _state,
+            district: _district,
+            blockName: _blockName,
+            panchyatName: _panchyatName,
+            villageName: _villageName
+        });
+
         shgs[id] = SHG(
             id,
             members,
             name,
-            location,
+            newlocation,
             dateOfFormation,
             0,
             0,
