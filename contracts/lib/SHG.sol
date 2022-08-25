@@ -51,6 +51,7 @@ contract SHG is structs, helpers, modifiers {
                 users[userid].userType = UserType.TREASURER;
             addressToSHGid[users[userid].walletAddress] = numSHGs;
         }
+        shgsOfDistrict[_district].push(id);
     }
 
     function addSHGMember(uint256 userid, uint256 shg) public {

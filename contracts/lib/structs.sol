@@ -106,6 +106,7 @@ contract structs {
 
     mapping(uint256 => User) public users;
     mapping(uint256 => SHG) public shgs;
+    mapping(string => uint256[]) public shgsOfDistrict;
     mapping(uint256 => Bank) public banks;
 
     mapping(address => uint256) public addressToUser;
@@ -117,10 +118,10 @@ contract structs {
     mapping(address => uint256) public addressToSHGid;
     mapping(address => uint256) public addressToBankid;
 
-    uint256 public numUsers;
-    uint256 public numSHGs;
-    uint256 public numUserRequests;
-    uint256 public numSHGRequests;
-    uint256 public numBanks;
-    uint256 public numLoans;
+    uint256 numUsers;
+    uint256 numSHGs;
+    uint256 numUserRequests;
+    uint256 numSHGRequests;
+    uint256 numBanks;
+    uint256 numLoans;
 }
