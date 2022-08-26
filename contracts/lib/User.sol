@@ -112,13 +112,12 @@ contract User is structs, modifiers {
         return numUsers;
     }
 
-    function getUserRequest(uint256 _userid) public returns (uint256[] memory) {
-        for (uint256 i = 0; i < numUserRequests; i++) {
-            if (userRequests[i].userId == _userid) {
-                userToRequests[_userid].push(i);
-            }
-        }
-        return userToRequests[_userid];
+    function getUserRequest(uint256 _userid)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return users[_userid].requests;
     }
 
     function getUserEMI(uint256 userid, uint256 loanid)
