@@ -40,6 +40,7 @@ contract SHG is structs, helpers, modifiers {
             0,
             new uint256[](0),
             new uint256[](0),
+            new uint256[](0),
             _baseIntrest
         );
         for (uint256 i = 0; i < members.length; i++) {

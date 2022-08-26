@@ -72,6 +72,7 @@ contract User is structs, modifiers {
             new uint256[](0)
         );
         users[_userid].requests.push(requestId);
+        shgs[_shgid].userRequests.push(requestId);
     }
 
     function deleteRequest(uint256 _userid, uint256 _requestid)

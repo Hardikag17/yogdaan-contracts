@@ -66,6 +66,7 @@ contract structs {
         uint256 owedBalance;
         uint256[] loansGiven;
         uint256[] loansTaken;
+        uint256[] userRequests;
         uint256 baseIntrest;
     }
 
