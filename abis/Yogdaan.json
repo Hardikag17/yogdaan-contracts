@@ -23064,12 +23064,12 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0xa4c01Fa03711d980a274e850Ee2Bb729e3a0e83d",
-      "transactionHash": "0x301045df9cc788b159c7d5dbe9f405fb527a4abc9146cb1dd9e45d93b815c8cc"
+      "address": "0x2d9c7DB1E21afed03d3963A0046137980975cBD7",
+      "transactionHash": "0x0f2a3dcd8ecfe8e7f167b979bd9d6308a620c66918a15f1c5b1b91355f857eae"
     }
   },
   "schemaVersion": "3.4.9",
-  "updatedAt": "2022-08-26T04:29:05.095Z",
+  "updatedAt": "2022-08-26T07:01:15.914Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
