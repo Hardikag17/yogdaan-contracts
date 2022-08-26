@@ -224,4 +224,11 @@ contract SHG is structs, helpers, modifiers {
     {
         return shgs[_shgid].userRequests;
     }
+
+    function addMoney(uint256 _amount, uint256 _shgid) public payable {
+        require(msg.value >= _amount, "deposited amount not matching input");
+        if (msg.value > _amount)
+            payable(msg.sender).transfer(msg.value - _amount);
+        shgs[_shgid].currentBalance += _amount;
+    }
 }
