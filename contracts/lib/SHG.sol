@@ -131,20 +131,20 @@ contract SHG is structs, helpers, modifiers {
         UserRequest storage request = userRequests[_requestid];
         require(request.SHGId == _shgid);
 
-        require(checkApproval(_requestid));
+        // require(checkApproval(_requestid));
         request.approvals.push(addressToUser[msg.sender]);
 
-        if (request.approvals.length > shgs[_shgid].users.length / 2) {
-            request.status = RequestStatus.APPROVED;
-        }
+        // if (request.approvals.length > shgs[_shgid].users.length / 2) {
+        request.status = RequestStatus.APPROVED;
+        // }
     }
 
     function sendRequestToBank(
         uint256 _shgid,
         uint256 _amount,
         uint256 _loanTime
-    ) public onlySHG(_shgid) {
-        require(users[addressToUser[msg.sender]].shgid == _shgid);
+    ) public {
+        // require(users[addressToUser[msg.sender]].shgid == _shgid);
         uint256 reqid = numSHGRequests++;
         shgRequests[reqid] = SHGRequest(
             reqid,
