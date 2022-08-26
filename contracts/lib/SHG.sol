@@ -216,4 +216,12 @@ contract SHG is structs, helpers, modifiers {
     {
         return districtToSHGs[district];
     }
+
+    function userRequestsOfSHG(uint256 _shgid)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return shgs[_shgid].userRequests;
+    }
 }
